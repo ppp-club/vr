@@ -14,6 +14,7 @@ import java.util.Map;
 public class Server {
 
     public static void main(String[] args) {
+        new Thread(MainUI::init).start();
         SpringApplication.run(Server.class, args);
     }
 
@@ -23,6 +24,7 @@ public class Server {
     public String greeting(@RequestBody String a) {
         Map< String, Object > map = JsonParserFactory.getJsonParser().parseMap(a);
         Coords coords = new Coords((Double) map.get("x"), (Double) map.get("y"));
+        MainUI.screenBuffer[(int) coords.x][(int) coords.y] = 1;
         return "got " + coords.x + " " + coords.y;
     }
 
