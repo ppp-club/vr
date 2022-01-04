@@ -23,7 +23,7 @@ public class MainUI {
 
                     for (int x = 0; x < screenBuffer.length; x++) {
                         for (int y = 0; y < screenBuffer[y].length; y++) {
-                            if(screenBuffer[x][y] != 0) g2.drawOval(x, y, 10, 10);
+                            if(screenBuffer[x][y] != 0) g2.fillRect(x, y, 10, 10);
                         }
                     }
                 }
