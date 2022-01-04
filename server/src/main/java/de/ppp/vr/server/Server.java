@@ -14,7 +14,7 @@ import java.util.Map;
 public class Server {
 
     public static void main(String[] args) {
-        new Thread(MainUI::init).start();
+        MainUI.init();
         SpringApplication.run(Server.class, args);
     }
 
