@@ -2,17 +2,31 @@ package de.ppp.vr.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.json.JsonParserFactory;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @SpringBootApplication
+@RestController
 public class Server {
 
     public static void main(String[] args) {
         SpringApplication.run(Server.class, args);
     }
 
-    /*@GetMapping("/hello")
-    public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return String.format("Hello %s!", name);
-    }*/
+    private static final String template = "Hello, %s!";
+
+    @PostMapping("/sendcoords")
+    public String greeting(@RequestBody String a) {
+        Map< String, Object > map = JsonParserFactory.getJsonParser().parseMap(a);
+        Coords coords = new Coords((Double) map.get("x"), (Double) map.get("y"));
+        return "got " + coords.x + " " + coords.y;
+    }
+
+    public record Coords(double x, double y) {
+    }
 
 }
