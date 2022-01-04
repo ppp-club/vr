@@ -21,9 +21,7 @@ public class Server {
     private static final String template = "Hello, %s!";
 
     @PostMapping("/sendcoords")
-    public String greeting(@RequestBody String a) {
-        Map< String, Object > map = JsonParserFactory.getJsonParser().parseMap(a);
-        Coords coords = new Coords((Double) map.get("x"), (Double) map.get("y"));
+    public String greeting(@RequestBody Coords coords) {
         MainUI.screenBuffer[(int) coords.x][(int) coords.y] = 1;
         MainUI.update();
         return "got " + coords.x + " " + coords.y;
