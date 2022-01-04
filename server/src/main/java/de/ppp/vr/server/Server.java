@@ -25,6 +25,7 @@ public class Server {
         Map< String, Object > map = JsonParserFactory.getJsonParser().parseMap(a);
         Coords coords = new Coords((Double) map.get("x"), (Double) map.get("y"));
         MainUI.screenBuffer[(int) coords.x][(int) coords.y] = 1;
+        MainUI.update();
         return "got " + coords.x + " " + coords.y;
     }
 
