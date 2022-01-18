@@ -5,14 +5,14 @@ import java.awt.*;
 
 public class MainUI {
 
-    public static final int WIDTH = 600, HEIGHT = 400;
+    public static final int WIDTH = 1200, HEIGHT = 800;
     public static final int[][] screenBuffer = new int[WIDTH][HEIGHT];
     private static JPanel panel;
 
     public static void init() {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("VR");
-            frame.setSize(600, 400);
+            frame.setSize(WIDTH, HEIGHT);
             frame.setVisible(true);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

@@ -2,17 +2,40 @@ package de.ppp.vr.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 @SpringBootApplication
 @RestController
 public class Server {
 
     public static void main(String[] args) {
+        logIPs();
         MainUI.init();
         SpringApplication.run(Server.class, args);
+    }
+
+    static void logIPs() {
+        try {
+            System.out.println("Your Host addr: " + InetAddress.getLocalHost().getHostAddress());  // often returns "127.0.0.1"
+            Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
+            while (enumeration.hasMoreElements()) {
+                NetworkInterface e = enumeration.nextElement();
+                Enumeration<InetAddress> a = e.getInetAddresses();
+                while (a.hasMoreElements()) {
+                    InetAddress addr = a.nextElement();
+                    System.out.println("  " + addr.getHostAddress());
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @PostMapping("/sendcoords")
@@ -22,7 +45,14 @@ public class Server {
         return "got " + coords.x + " " + coords.y;
     }
 
-    public record Coords(double x, double y) {
+    @GetMapping("/bounds")
+    public Bounds bounds() {
+        return new Bounds(MainUI.WIDTH, MainUI.HEIGHT);
     }
 
+    public record Bounds(double width, double height) {
+    }
+
+    public record Coords(double x, double y) {
+    }
 }
