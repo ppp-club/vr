@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>PPP-Club</title>
-  </head>
-  <body>
-    <span id="x">0</span>
-    <br />
-    <span id="y">0</span>
-    <br />
-    <span id="z">0</span>
-  </body>
+</head>
+<body>
+<span id="x">0</span>
+<br/>
+<span id="y">0</span>
+<br/>
+<span id="z">0</span>
+</body>
 
-  <script>
-    navigator.permissions.query({ name: 'gyroscope' })
+<script>
+    navigator.permissions.query({name: 'gyroscope'}).then(result => {
+        if (result.state == 'granted') {
+            // frequency ... how often a sample should be taken per second
+            let gyroscope = new Gyroscope({frequency: 2});
 
-    let gyroscope = new Gyroscope({ frequency: 60 })
+            gyroscope.addEventListener('reading', (e) => {
+                const x = Math.round(gyroscope.x * 100) / 100;
+                const y = Math.round(gyroscope.y * 100) / 100;
+                const z = Math.round(gyroscope.z * 100) / 100;
 
-    gyroscope.addEventListener('reading', (e) => {
-      const x = Math.round(gyroscope.x * 1000) / 1000
-      const y = Math.round(gyroscope.y * 1000) / 1000
-      const z = Math.round(gyroscope.z * 1000) / 1000
+                document.getElementById('x').textContent = x;
+                document.getElementById('y').textContent = y;
+                document.getElementById('z').textContent = z;
+            });
 
-      document.getElementById('x').textContent = x
-      document.getElementById('y').textContent = y
-      document.getElementById('z').textContent = z
+            result.state.onchange = function() {
+                document.getElementById('x').textContent = "changed to: " + this.state;
+            }
+        } else {
+            document.getElementById('x').textContent = "not supported";
+        }
+        gyroscope.start();
     })
-    gyroscope.start()
-  </script>
+</script>
 
-  <style>
+<style>
     span {
-      font-family: monospace;
+        font-family: monospace;
     }
-  </style>
+</style>
 </html>
