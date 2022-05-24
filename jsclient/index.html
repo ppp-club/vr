@@ -16,12 +16,12 @@
 
 <script>
     // frequency ... how often a sample should be taken per second
-    let gyroscope = new Gyroscope({frequency: 2});
+    let gyroscope = new Gyroscope({frequency: 5});
 
     gyroscope.addEventListener('reading', (e) => {
-        const x = Math.round(gyroscope.x * 100) / 100;
-        const y = Math.round(gyroscope.y * 100) / 100;
-        const z = Math.round(gyroscope.z * 100) / 100;
+        const x = Math.round(gyroscope.x * 100) / 100.0;
+        const y = Math.round(gyroscope.y * 100) / 100.0;
+        const z = Math.round(gyroscope.z * 100) / 100.0;
 
         document.getElementById('x').textContent = x;
         document.getElementById('y').textContent = y;
