@@ -15,29 +15,23 @@
 </body>
 
 <script>
-    navigator.permissions.query({name: 'gyroscope'}).then(result => {
-        if (result.state == 'granted') {
-            // frequency ... how often a sample should be taken per second
-            let gyroscope = new Gyroscope({frequency: 2});
+    // frequency ... how often a sample should be taken per second
+    let gyroscope = new Gyroscope({frequency: 2});
 
-            gyroscope.addEventListener('reading', (e) => {
-                const x = Math.round(gyroscope.x * 100) / 100;
-                const y = Math.round(gyroscope.y * 100) / 100;
-                const z = Math.round(gyroscope.z * 100) / 100;
+    gyroscope.addEventListener('reading', (e) => {
+        const x = Math.round(gyroscope.x * 100) / 100;
+        const y = Math.round(gyroscope.y * 100) / 100;
+        const z = Math.round(gyroscope.z * 100) / 100;
 
-                document.getElementById('x').textContent = x;
-                document.getElementById('y').textContent = y;
-                document.getElementById('z').textContent = z;
-            });
+        document.getElementById('x').textContent = x;
+        document.getElementById('y').textContent = y;
+        document.getElementById('z').textContent = z;
+    });
 
-            result.state.onchange = function() {
-                document.getElementById('x').textContent = "changed to: " + this.state;
-            }
-        } else {
-            document.getElementById('x').textContent = "not supported";
-        }
-        gyroscope.start();
-    })
+    result.state.onchange = function () {
+        document.getElementById('x').textContent = "changed to: " + this.state;
+    }
+    gyroscope.start();
 </script>
 
 <style>
