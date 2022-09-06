@@ -2,10 +2,7 @@ package de.ppp.vr.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -39,6 +36,7 @@ public class Server {
     }
 
     @PostMapping("/sendcoords")
+    @CrossOrigin(origins = "*", maxAge = 3600)
     public String greeting(@RequestBody Coords coords) {
         if(coords.x >= MainUI.WIDTH || coords.y >= MainUI.HEIGHT) return "coords out of bounds " + coords;
         MainUI.screenBuffer[(int) coords.x][(int) coords.y] = 1;
