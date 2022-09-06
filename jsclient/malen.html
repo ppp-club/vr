@@ -7,28 +7,51 @@
     <title>PPP-Club</title>
 </head>
 <body>
-<span id="x">0</span>
-<br/>
-<span id="y">0</span>
-<br/>
-<span id="z">0</span>
+<canvas id="canvas" style="width: 1200px; height: 800px; position: absolute; border: 1px lightgray solid; padding: 0; margin: 0">
+</canvas>
 </body>
 
 <script>
-    // frequency ... how often a sample should be taken per second
-    let gyroscope = new Gyroscope({frequency: 5});
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+    ctx.fillStyle = "lightgray";
+    ctx.scale(1, 1);
+    ctx.rect(0, 0, 1200, 800);
+    ctx.setTransform(1, 1, 1, 1, 0, 0);
 
-    gyroscope.addEventListener('reading', (e) => {
-        const x = Math.round(gyroscope.x * 100) / 100.0;
-        const y = Math.round(gyroscope.y * 100) / 100.0;
-        const z = Math.round(gyroscope.z * 100) / 100.0;
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = 'green';
+    ctx.lineWidth = 1;
+    ctx.lineCap = 'round';
+    ctx.resetTransform();
+    console.log("transform is identity: " + ctx.getTransform().isIdentity)
 
-        document.getElementById('x').textContent = x;
-        document.getElementById('y').textContent = y;
-        document.getElementById('z').textContent = z;
-    });
+    let url = "http://192.168.171.201:8080/sendcoords";
+    let canvasLeft =  canvas.getBoundingClientRect().left;
+    let canvasTop =  canvas.getBoundingClientRect().top;
 
-    gyroscope.start();
+    // console.log(canvas.getBoundingClientRect().width +","+canvas.getBoundingClientRect().height)
+
+    canvas.addEventListener("mousemove", (e) => {
+        console.log(e.clientX + ","+ e.clientY)
+
+        let x = (e.clientX - canvasLeft)/4.0;
+        let y = (e.clientY - canvasTop)/5.3;
+        // let x = (e.clientX - canvasLeft) / (canvas.getBoundingClientRect().width / e.target.clientWidth);
+        // let y = (e.clientY - canvasTop) / (canvas.getBoundingClientRect().height / e.target.clientHeight);
+        // let x =  e.offsetX - ctx.getTransform().e;
+        // let y = e.offsetY - ctx.getTransform().f
+
+        ctx.beginPath(); // begin
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send(JSON.stringify({"x": e.clientX, "y": e.clientY}));
+    })
 </script>
 
 <style>
@@ -37,3 +60,4 @@
     }
 </style>
 </html>
+
