@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PPP-Club</title>
+</head>
+<body>
+<span id="x">0</span>
+<br/>
+<span id="y">0</span>
+<br/>
+<span id="z">0</span>
+</body>
+
+<script>
+    // frequency ... how often a sample should be taken per second
+    let gyroscope = new Gyroscope({frequency: 5});
+
+    gyroscope.addEventListener('reading', (e) => {
+        const x = Math.round(gyroscope.x * 100) / 100.0;
+        const y = Math.round(gyroscope.y * 100) / 100.0;
+        const z = Math.round(gyroscope.z * 100) / 100.0;
+
+        document.getElementById('x').textContent = x;
+        document.getElementById('y').textContent = y;
+        document.getElementById('z').textContent = z;
+    });
+
+    gyroscope.start();
+</script>
+
+<style>
+    span {
+        font-family: monospace;
+    }
+</style>
+</html>
